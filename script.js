@@ -12,6 +12,9 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// set the fill style outside of our objects for performance, minimize setting this over and over again
+ctx.fillStyle = "pink";
+
 // resize the canvas if the user resizes the window
 window.addEventListener("resize", () => {
     canvas.width = window.innerWidth;
@@ -31,7 +34,7 @@ class Particle {
      * @param {CanvasRenderingContext2D} context
      */
     draw(context) {
-        context.beginpath();
+        context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         context.fill();
     }
@@ -61,6 +64,6 @@ class Effect {
 }
 
 const effect = new Effect(canvas);
-console.log(effect);
+effect.handleParticles(ctx);
 
 function animate() {}
