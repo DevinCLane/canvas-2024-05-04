@@ -38,23 +38,34 @@ class Particle {
         this.y =
             this.radius +
             Math.random() * (this.effect.height - this.radius * 2);
+        this.vx = Math.random() * 4 - 2;
+        this.vy = Math.random() * 4 - 2;
     }
     /**
      *
      * @param {CanvasRenderingContext2D} context
      */
     draw(context) {
-        const scaledX = oklabScaledNumber(this.x);
-        const scaledY = oklabScaledNumber(this.y);
-        context.fillStyle = `oklab(1 ${scaledX} ${scaledY})`;
-        console.log(scaledX, scaledY);
+        // const scaledX = oklabScaledNumber(this.x);
+        // const scaledY = oklabScaledNumber(this.y);
+        context.fillStyle = `oklab(1 ${this.x} ${this.y})`;
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         context.fill();
     }
 
     update() {
-        this.x++;
+        // random velocity in x and y directions
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // bounce off the horizontal walls
+        if (this.x > this.effect.width - this.radius || this.x < this.radius)
+            this.vx *= -1;
+
+        // bounce off the vertical walls
+        if (this.y > this.effect.height - this.radius || this.y < this.radius)
+            this.vy *= -1;
     }
 }
 
@@ -86,6 +97,7 @@ const effect = new Effect(canvas);
 effect.handleParticles(ctx);
 
 function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     effect.handleParticles(ctx);
     requestAnimationFrame(animate);
 }
