@@ -46,9 +46,12 @@ class Particle {
      * @param {CanvasRenderingContext2D} context
      */
     draw(context) {
-        // const scaledX = oklabScaledNumber(this.x);
-        // const scaledY = oklabScaledNumber(this.y);
-        context.fillStyle = `oklab(1 ${this.x} ${this.y})`;
+        // using the new oklch color space.
+        // l = lightness from 0 to 100%
+        // c = chroma from gray to the most saturated color
+        // h = hue angle 0 - 360
+        // optional a = opacity 0 - 1 or 0 - 100%
+        context.fillStyle = `oklch(70% 0.1 ${this.y})`;
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         context.fill();
@@ -75,7 +78,7 @@ class Effect {
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.particles = [];
-        this.numberOfParticles = 20;
+        this.numberOfParticles = 50;
         this.createParticles();
     }
     // runs once to intialize the effect
